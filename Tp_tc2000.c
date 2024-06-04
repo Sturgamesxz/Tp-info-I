@@ -120,6 +120,38 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
     }
     
 }
+
+void Cargadatostiempos(){//Funcion para cargar tiempos.txt
+
+     FILE *ArchivoTiempos;//Declaro primer archivo
+
+    ArchivoTiempos = fopen("tiempos.txt","r");//Abro archivo
+
+    if (ArchivoTilotos == NULL) {//Compruebo si lo puede abrir
+        printf("Error: no se pudo abrir el archivo pilotos.txt.-\n");
+        exit(1);
+    }
+
+
+     while(fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_autoTiempo, &vueltasCompletas, &min, &seg, &numeroCarrera, etapa)==6)
+    {
+
+
+
+
+
+
+
+
+
+    }
+
+    fclose(ArchivoPilotos);
+
+}
+
+
+
 int ACTCTC2024(){ //Función del menú 1
 
     int rta;
@@ -160,7 +192,8 @@ int MenuCarrera(){//Función del menú 2
 }
 int main()
 {
-    Cargadatos();//Carga y muestra en pantalla ambos archivos
+    Cargadatostiempos();//Carga y muestra en pantalla el archivo de tiempos
+    Cargadatospilotos();//Carga y muestra en pantalla el archivo de pilotos
 
     while(ACTCTC2024()!=3){//Inicia ambos menues hasta que se desee salir
     MenuCarrera();
