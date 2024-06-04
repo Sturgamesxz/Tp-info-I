@@ -22,7 +22,7 @@ struct Tiempos
 };
 
 
-void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
+void Cargadatospilotos(){//Funcion para cargar pilotos.txt
 
     setlocale(LC_ALL,"");
 
@@ -45,7 +45,7 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
     while(fscanf(ArchivoPilotos,"%d %s %s %d %s %s %s",&num_auto, ap, nom, &edad, ciudad, marca, equipo) == 7)
     {
         pi.num_auto[i] = num_auto;
-        
+
         strncpy(pi.nom[i], nom, sizeof(pi.nom[i]) - 1);
         pi.nom[i][sizeof(pi.nom[i]) - 1] = '\0';  // Asegurar que la cadena esté terminada
 
@@ -55,7 +55,7 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
         pi.edad[i] = edad;
 
         //printf("%d\t %s\t %s\t %d\t  \n", num_auto, nom, ap, edad);
-        
+
         i++;
 
     }
@@ -68,7 +68,7 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
     //     printf("apellido: %s \n",pi.ap[j]);
     //     printf("edad: %d \n",pi.edad[j]);
     // }
-    
+
     printf("\n\n-----------------------------------\n\n");
 
     struct Tiempos ti;
@@ -76,10 +76,10 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
     int num_autoTiempo, vueltasCompletas, min, numeroCarrera;
     char etapa[41];
     float seg;
-    
+
     int q=0;
 
-    FILE *ArchivoTiempos;//Declaro segundo archivo
+   /* FILE *ArchivoTiempos;//Declaro segundo archivo
     ArchivoTiempos = fopen("tiempos.txt","r");//Abro archivo
 
     if (ArchivoTiempos == NULL) {//Compruebo si lo puede abrir
@@ -87,8 +87,8 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
         exit(1);
     }
 
-    
-    while(fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_autoTiempo, &vueltasCompletas, &min, &seg, &numeroCarrera, etapa)==6) 
+
+    while(fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_autoTiempo, &vueltasCompletas, &min, &seg, &numeroCarrera, etapa)==6)
     {
         ti.num_autoTiempo[q]= num_autoTiempo;
         ti.vueltasCompletas[q] = vueltasCompletas;
@@ -100,13 +100,14 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
         ti.etapa[q][sizeof(ti.etapa[q]) - 1] = '\0';  // Asegurar que la cadena esté terminada
 
         //printf("%d\t %d\t %d\t %f\t %d\t %s\t\n", num_autoTiempo, vueltasCompletas, min, seg,numeroCarrera, etapa);
-        
+
         q++;
 
         //printf("q es %d \n",q);
 
     }
     fclose(ArchivoPilotos);
+*/
 
     for (int j = 0; j < 10; j++)
     {
@@ -118,9 +119,8 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
         printf("etapa: %s \n",ti.etapa[j]);
 
     }
-    
-}
 
+}
 void Cargadatostiempos(){//Funcion para cargar tiempos.txt
 
      struct Tiempos PEPE;
