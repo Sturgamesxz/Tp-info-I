@@ -123,30 +123,28 @@ void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
 
 void Cargadatostiempos(){//Funcion para cargar tiempos.txt
 
+     struct Tiempos PEPE;
+
      FILE *ArchivoTiempos;//Declaro primer archivo
 
     ArchivoTiempos = fopen("tiempos.txt","r");//Abro archivo
 
-    if (ArchivoTilotos == NULL) {//Compruebo si lo puede abrir
+    if (ArchivoTiempos == NULL) {//Compruebo si lo puede abrir
         printf("Error: no se pudo abrir el archivo pilotos.txt.-\n");
         exit(1);
     }
 
 
-     while(fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_autoTiempo, &vueltasCompletas, &min, &seg, &numeroCarrera, etapa)==6)
-    {
+    int i=0;
 
-
-
-
-
-
-
-
-
+    fscanf(ArchivoTiempos,"%d %d %d %d %f %d %s",&PEPE.num_autoTiempo, &PEPE.vueltasCompletas, &PEPE.min, &PEPE.seg, &PEPE.numeroCarrera, &PEPE.etapa);  //lee la primera linea del archivo.
+    while(!(feof(ArchivoTiempos))){
+        printf("%d\t %s\t %s\t %d\t %s\t %s\t %s\t \n", PEPE.num_autoTiempo, PEPE.vueltasCompletas, PEPE.min, PEPE.seg, PEPE.numeroCarrera, PEPE.etapa);
+        fscanf(ArchivoTiempos,"%d %s %s %d %s %s %s",&PEPE.num_autoTiempo, &PEPE.vueltasCompletas, &PEPE.min, &PEPE.seg, &PEPE.numeroCarrera, &PEPE.etapa);
     }
 
-    fclose(ArchivoPilotos);
+
+    fclose(ArchivoTiempos);
 
 }
 
