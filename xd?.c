@@ -62,8 +62,6 @@ void CargadatosPilotos(struct Pilotos pi[59]) { // Función para cargar pilotos.
 }
 void CargarDatosTiempos(struct Pilotos pi[59]) {
 
-//FILE *ArchivoTiempos; // Declaro primer archivo
-
    FILE *ArchivoTiempos; // Declaro primer archivo
     ArchivoTiempos = fopen("tiempos.txt", "r"); // Abro archivo
 
