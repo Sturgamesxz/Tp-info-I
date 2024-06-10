@@ -99,6 +99,8 @@ void CargarDatosTiempos(struct Tiempos gil[300]) {
             i++;
 
         }
+        fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_auto, &vueltas, &min, &seg, &ncarrera, etapa);
+
     }
 
     for (int j = 0; j < i; j++) {
@@ -157,7 +159,7 @@ int main()
    struct Tiempos gil[300];
 
     CargadatosPilotos(pi);
-    CargarDatosTiempos(pi);
+    CargarDatosTiempos(gil);
 
     while(ACTCTC2024()!=3){//Inicia ambos menues hasta que se desee salir
         MenuCarrera();
