@@ -10,14 +10,20 @@ struct Pilotos
     char marca[41];
     int num_auto;
 
+
+};
+struct Tiempos{
+
     int vueltasCompletas;
     int min;
     float seg;
     int numeroCarrera;
     char etapa[41];
 
-};
 
+
+
+};
 void CargadatosPilotos(struct Pilotos pi[59]) { // Función para cargar pilotos.txt
 
     setlocale(LC_ALL, "");
@@ -60,10 +66,10 @@ void CargadatosPilotos(struct Pilotos pi[59]) { // Función para cargar pilotos.
 
     fclose(ArchivoPilotos); // Cierro archivo
 }
-void CargarDatosTiempos(struct Pilotos pi[59]) {
+void CargarDatosTiempos(struct Tiempos gil[300]) {
 
-   FILE *ArchivoTiempos; // Declaro primer archivo
-    ArchivoTiempos = fopen("tiempos.txt", "r"); // Abro archivo
+    FILE *ArchivoTiempos;
+    ArchivoTiempos = fopen("tiempos.txt", "r");
 
     if (ArchivoTiempos == NULL) {
         printf("Error: no se pudo abrir el archivo tiempos.txt.\n");
@@ -77,32 +83,36 @@ void CargarDatosTiempos(struct Pilotos pi[59]) {
     int ncarrera;
     char etapa[14];
 
-    fscanf(ArchivoTiempos,"%d %d %d %f %d %s",&num_auto, &vueltas, &min, &seg, &ncarrera, etapa);
+    int i = 0;
+
+    fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_auto, &vueltas, &min, &seg, &ncarrera, etapa);
 
 
     while (!(feof(ArchivoTiempos))) {
 
-        for (int i = 0; i < 60; i++) {
-            if (pi[i].num_auto == num_auto) {
-                    pi[i].vueltasCompletas = vueltas;
-                    pi[i].min=min;
-                    pi[i].seg=seg;
-                    pi[i].numeroCarrera=ncarrera;
-                    strcpy(pi[i].etapa,etapa);
-                    break;
-                }
+        if (strcmp(etapa, "final") == 0 || strcmp(etapa, "clasificacion") == 0) {
+            gil[i].vueltasCompletas = vueltas;
+            gil[i].min = min;
+            gil[i].seg = seg;
+            gil[i].numeroCarrera = ncarrera;
+            strcpy(gil[i].etapa, etapa);
+            i++;
 
-            }
-    fscanf(ArchivoTiempos,"%d %d %d %f %d %s",&num_auto, &vueltas, &min, &seg, &ncarrera, etapa);
         }
+    }
 
-  for(int i=0;i<60;i++){//muestreo de prueba
+    for (int j = 0; j < i; j++) {
 
-         printf("%d\t %d\t %d\t  %f\t %d %s\n\n",  pi[i].vueltasCompletas, pi[i].min, pi[i].seg, pi[i].numeroCarrera,pi[i].etapa );
+        printf("%d\t %d\t %f\t  %d %s\n\n", gil[j].vueltasCompletas, gil[j].min, gil[j].seg, gil[j].numeroCarrera, gil[j].etapa);
     }
 
     fclose(ArchivoTiempos);
 }
+
+
+
+
+
 int ACTCTC2024(){ //Función del menú 1
 
     int rta;
@@ -144,6 +154,7 @@ int MenuCarrera(){//Función del menú 2
 int main()
 {
    struct Pilotos pi[59];
+   struct Tiempos gil[300];
 
     CargadatosPilotos(pi);
     CargarDatosTiempos(pi);
