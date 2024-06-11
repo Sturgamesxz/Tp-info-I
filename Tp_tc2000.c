@@ -5,174 +5,130 @@
 
 struct Pilotos
 {
-    int *num_auto;
-    char (*nom)[41];
-    char (*ap)[41];
-    int *edad;
+    char nom[41];
+    char ap[41];
+    char marca[41];
+    int num_auto;
 };
 
-struct Tiempos
-{
-    int *num_autoTiempo;
-    int *vueltasCompletas;
-    int *min;
-    float *seg;
-    int *numeroCarrera;
-    char (*etapa)[41];  
+struct Tiempos{
+    int num_auto;
+    int vueltasCompletas;
+    float seg;
+    int numeroCarrera;
+    char etapa[41];
 };
 
-void Cargadatos(){//Funcion para cargar tiempos.txt y pilotos.txt
-    setlocale(LC_ALL,"");
+struct unaCarrera{
+    int num_auto;
+    int vueltasCompletas;
+    float seg;
+};
+
+void CargadatosPilotos(struct Pilotos pi[60]) 
+{ // Función para cargar pilotos.txt
+
+    setlocale(LC_ALL, "");
 
     int num_auto, edad;
     char nom[41], ap[41], ciudad[41], marca[41], equipo[41];
-    int numLines = 0;
 
-    FILE *ArchivoPilotos;//Declaro primer archivo
+    FILE *ArchivoPilotos; // Declaro primer archivo
+    ArchivoPilotos = fopen("pilotos.txt", "r"); // Abro archivo
 
-    ArchivoPilotos = fopen("pilotos.txt","r");//Abro archivo
-
-    if (ArchivoPilotos == NULL) {//Compruebo si lo puede abrir
-        printf("Error: no se pudo abrir el archivo pilotos.txt.-\n");
+    if (ArchivoPilotos == NULL) { // Compruebo si lo puede abrir
+        printf("Error: no se pudo abrir el archivo pilotos.txt.\n");
         exit(1);
     }
-
-    struct Pilotos pi;
-
-    char ch;
-    while (!feof(ArchivoPilotos)) {
-        ch = fgetc(ArchivoPilotos);
-        if (ch == '\n') {
-            numLines++;
-        }
-    }
-    rewind(ArchivoPilotos); // Volver al principio del archivo
-
 
     int i = 0;
 
-    pi.nom = (char (*)[41])malloc(numLines * sizeof(*pi.nom));     
-    pi.ap = (char (*)[41])malloc(numLines * sizeof(*pi.ap));     
-    pi.num_auto = (int *)malloc(numLines * sizeof(int));
-    pi.edad = (int *)malloc(numLines * sizeof(int));
 
-    while(fscanf(ArchivoPilotos,"%d %s %s %d %s %s %s",&num_auto, ap, nom, &edad, ciudad, marca, equipo) == 7)
-    {
-        pi.num_auto[i] = num_auto;
-        
-        strncpy(pi.nom[i], nom, sizeof(pi.nom[i]) - 1);
-        pi.nom[i][sizeof(pi.nom[i]) - 1] = '\0';  // Asegurar que la cadena esté terminada
+    fscanf(ArchivoPilotos,"%d %s %s %d %s %s %s",&num_auto, nom, ap, &edad, ciudad, marca, equipo);
 
-        strncpy(pi.ap[i], ap, sizeof(pi.ap[i]) - 1);
-        pi.ap[i][sizeof(pi.ap[i]) - 1] = '\0';  // Asegurar que la cadena esté terminada
+    while (!(feof(ArchivoPilotos))) {
 
-        pi.edad[i] = edad;
+        pi[i].num_auto=num_auto;
+        strcpy(pi[i].nom,nom);
+        strcpy(pi[i].ap,ap);
+        strcpy(pi[i].marca,marca);
 
-        //printf("%d\t %s\t %s\t %d\t  \n", num_auto, nom, ap, edad);
-        
+        fscanf(ArchivoPilotos,"%d %s %s %d %s %s %s",&num_auto, nom, ap, &edad, ciudad, marca, equipo);
         i++;
     }
-    fclose(ArchivoPilotos);
 
-    // for (int j = 0; j < i; j++)
-    // {
-    //     printf("auto: %d \n",pi.num_auto[j]);
-    //     printf("nombre: %s \n",pi.nom[j]);
-    //     printf("apellido: %s \n",pi.ap[j]);
-    //     printf("edad: %d \n",pi.edad[j]);
+    //printf("\n\n\n\n\n\n\n");
+
+    // for(int i=0;i<60;i++){//muestreo de prueba
+
+    //      printf("%d\t %s\t %s\t  %s\t \n\n", pi[i].num_auto, pi[i].nom, pi[i].ap, pi[i].marca);
     // }
-    
-    printf("\n\n-----------------------------------\n\n");
 
-    int q=0;
+    fclose(ArchivoPilotos); // Cierro archivo
+}
 
-    FILE *ArchivoTiempos;//Declaro segundo archivo
-    ArchivoTiempos = fopen("tiempos.txt","r");//Abro archivo
-    
-    numLines = 0;
-    
-    char ch1;
-    while (!feof(ArchivoTiempos)) {
-        ch1 = fgetc(ArchivoTiempos);
-        if (ch1 == '\n') {
-            numLines++;
-        }
-    }
-    rewind(ArchivoTiempos); // Volver al principio del archivo
+void CargarDatosTiempos(struct Tiempos tiempo[180], char condicion [14]) 
+{
+    FILE *ArchivoTiempos;
+    ArchivoTiempos = fopen("tiempos.txt", "r");
 
-    struct Tiempos ti;
-
-    int num_autoTiempo, vueltasCompletas, min, numeroCarrera;
-    char etapa[41];
-    float seg;
-    
-    ti.num_autoTiempo = (int *)malloc(numLines * sizeof(int));
-    ti.vueltasCompletas = (int *)malloc(numLines * sizeof(int));
-    ti.min = (int *)malloc(numLines * sizeof(int));
-    ti.seg = (float *)malloc(numLines * sizeof(float));
-    ti.numeroCarrera = (int *)malloc(numLines * sizeof(int));
-    ti.etapa = (char (*)[41])malloc(numLines * sizeof(*ti.etapa)); 
-
-    if (ArchivoTiempos == NULL) {//Compruebo si lo puede abrir
-        printf("Error: no se pudo abrir el archivo tiempos.txt.-\n");
+    if (ArchivoTiempos == NULL) {
+        printf("Error: no se pudo abrir el archivo tiempos.txt.\n");
         exit(1);
     }
 
-    while(fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_autoTiempo, &vueltasCompletas, &min, &seg, &numeroCarrera, etapa)==6) 
+    int num_auto;
+    int vueltas;
+    int min;
+    float seg;
+    int ncarrera;
+    char etapa[14];
+
+    int i = 0;
+
+    fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_auto, &vueltas, &min, &seg, &ncarrera, etapa);
+
+    while (!(feof(ArchivoTiempos))) 
     {
-        ti.num_autoTiempo[q]= num_autoTiempo;
-        ti.vueltasCompletas[q] = vueltasCompletas;
-        ti.min[q] = min;
-        ti.seg[q] = seg;
-        ti.numeroCarrera[q] = numeroCarrera;
-
-        strncpy(ti.etapa[q], etapa, sizeof(ti.etapa[q]) - 1);
-        ti.etapa[q][sizeof(ti.etapa[q]) - 1] = '\0';  // Asegurar que la cadena esté terminada
-
-        //printf("%d\t %d\t %d\t %f\t %d\t %s\t\n", num_autoTiempo, vueltasCompletas, min, seg,numeroCarrera, etapa);
-        
-        q++;
-
-        //printf("q es %d \n",q);
-
+        if (strcmp(etapa, condicion) == 0) {
+            tiempo[i].num_auto= num_auto;
+            tiempo[i].vueltasCompletas = vueltas;
+            tiempo[i].seg = (min*60)+seg;
+            tiempo[i].numeroCarrera = ncarrera;
+            strcpy(tiempo[i].etapa, etapa);
+            i++;
+        }
+        fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_auto, &vueltas, &min, &seg, &ncarrera, etapa);
     }
-    fclose(ArchivoPilotos);
 
-    // for (int j = 0; j < 10; j++)
-    // {
-    //     printf("num_autoTiempo: %d \n",ti.num_autoTiempo[j]);
-    //     printf("vueltasCompletas: %d \n",ti.vueltasCompletas[j]);
-    //     printf("min: %d \n",ti.min[j]);
-    //     printf("seg: %f \n",ti.seg[j]);
-    //     printf("numeroCarrera: %d \n",ti.numeroCarrera[j]);
-    //     printf("etapa: %s \n",ti.etapa[j]);
-    // }
-
-    free(pi.num_auto);
-    free(pi.nom);
-    free(pi.ap);
-    free(pi.edad);
-
-    free(ti.num_autoTiempo);
-    free(ti.vueltasCompletas);
-    free(ti.min);
-    free(ti.seg);
-    free(ti.numeroCarrera);
-    free(ti.etapa);
-    for (int j = 0; j < 10; j++)
+    for (int j = 0; j < i; j++) 
     {
-        printf("Segnunfa");
-
-        printf("num_autoTiempo: %d \n",ti.num_autoTiempo[j]);
-        printf("vueltasCompletas: %d \n",ti.vueltasCompletas[j]);
-        printf("min: %d \n",ti.min[j]);
-        printf("seg: %f \n",ti.seg[j]);
-        printf("numeroCarrera: %d \n",ti.numeroCarrera[j]);
-        printf("etapa: %s \n",ti.etapa[j]);
+        printf("piloto: %d\t %d\t %d\t %f\t  %d\t %s\t \n", j, tiempo[j].num_auto, tiempo[j].vueltasCompletas,  tiempo[j].seg, tiempo[j].numeroCarrera, tiempo[j].etapa);
     }
-    
+
+    fclose(ArchivoTiempos);
 }
-int ACTCTC2024(){ //Función del menú 1
+
+void datosCarrera(struct Tiempos tiempo[180], int ncarrera, struct unaCarrera carrera[60])
+{
+    int j=0;
+
+    for (int i = 0; i < 180; i++) {
+        if (tiempo[i].numeroCarrera == ncarrera) {
+            carrera[j].num_auto = tiempo[i].num_auto;
+            carrera[j].vueltasCompletas = tiempo[i].vueltasCompletas;
+            carrera[j].seg = tiempo[i].seg;
+            j++;
+        }
+    }
+
+    for (int i = 0; i < j; i++) 
+    {
+        printf("%d\t %d\t %f\t\n", carrera[i].num_auto, carrera[i].vueltasCompletas,  carrera[i].seg);
+    }
+}
+
+int ACTCTC2024(struct Tiempos tiempo[180]){ //Función del menú 1
 
     int rta;
 
@@ -182,16 +138,30 @@ int ACTCTC2024(){ //Función del menú 1
     printf("\n  3-Salir\n");
     printf("\n  Opcion:");
     scanf("%d",&rta);
+
     while(rta>3||rta<1){//vValidacion
         printf("Opcion invalida, por favor ingrese una opcion valida: ");
         scanf("%d",&rta);
-   }
+    }
+
+    switch (rta)
+    {
+        case 1:
+            CargarDatosTiempos(tiempo, "clasificacion");
+            break;
+        case 2:
+            CargarDatosTiempos(tiempo, "final");
+            break;
+        default:
+            break;
+    }
     printf("\n");
 
     return rta;
 
 }
-int MenuCarrera(){//Función del menú 2
+
+int MenuCarrera(struct Tiempos tiempo[180], struct unaCarrera carrera[60]){//Función del menú 2
 
     int rta;
 
@@ -201,24 +171,45 @@ int MenuCarrera(){//Función del menú 2
     printf("\n  3-Neuquen\n");
     printf("\n  Opcion:");
     scanf("%d",&rta);
+    switch (rta)
+    {
+        case 1:
+            datosCarrera(tiempo, 1, carrera);
+            break;
+        case 2:
+            datosCarrera(tiempo, 2, carrera);
+            break;
+        case 3:
+            datosCarrera(tiempo, 3, carrera);
+            break;
+        default:
+            break;
+    }
+    
     while(rta>3||rta<1){//7Validacion
         printf("Opcion invalida, por favor ingrese una opcion valida: ");
         scanf("%d",&rta);
-   }
+    }
     printf("\n");
-
 
     return rta;
 }
 int main()
 {
-    Cargadatos();//Carga y muestra en pantalla ambos archivos
+    struct Pilotos pi[60];
+    struct Tiempos tiempo[180];
+    struct unaCarrera carrera[60];
 
-    while(ACTCTC2024()!=3){//Inicia ambos menues hasta que se desee salir
-    MenuCarrera();
+    CargadatosPilotos(pi);
+    // CargarDatosTiempos(tiempo);
+    int opcion;
+
+    opcion = ACTCTC2024(tiempo);
+
+    while(opcion!=3){//Inicia ambos menues hasta que se desee salir  
+        MenuCarrera(tiempo, carrera);
+        opcion = ACTCTC2024(tiempo);
     }
 
     return 0;
 }
-
-
