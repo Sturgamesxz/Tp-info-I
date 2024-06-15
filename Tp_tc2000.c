@@ -190,7 +190,7 @@ void podio(struct unaCarrera carrera[60], struct Pilotos pilotos[60])
         {
             if(pilotos[i].num_auto == carrera[j].num_auto)
             {
-                printf("  La %d posicion: es %s %s numero %d con un %s \n", j+1, pilotos[i].nom, pilotos[i].ap,pilotos[i].num_auto, pilotos[i].marca);
+                printf("  La %d posicion es del piloto numero %d, que es %s %s con un %s \n", j+1,pilotos[i].num_auto, pilotos[i].nom, pilotos[i].ap, pilotos[i].marca);
             }
         }
     }
@@ -249,7 +249,7 @@ int main()
                     {
                         if(pilotos[i].num_auto == carrera[0].num_auto)
                         {
-                            printf("\n  La pole position fue de %s %s con un %s numero: %d\n\n", pilotos[i].nom, pilotos[i].ap, pilotos[i].marca,pole);
+                            printf("\n  La pole position fue del piloto numero %d que es %s %s con un %s\n\n",pilotos[i].num_auto,pilotos[i].nom, pilotos[i].ap, pilotos[i].marca);
                         }
                     }
                 break;
