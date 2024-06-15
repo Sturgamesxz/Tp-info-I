@@ -11,23 +11,40 @@ struct Pilotos
     int num_auto;
 };
 
-struct Tiempos{
+struct Tiempos
+{
     int num_auto;
     int vueltasCompletas;
     float seg;
     int numeroCarrera;
-    char etapa[41];
+    char etapa[14];
 };
 
-struct unaCarrera{
+struct unaCarrera
+{
     int num_auto;
-    int vueltasCompletas;
-    float seg;
+    float tiempo;
 };
 
-void CargadatosPilotos(struct Pilotos pi[60]) 
-{ // Función para cargar pilotos.txt
+void validar(int *op)
+{
+    while(*op>3||*op<1)
+    {
+        printf("Opcion invalida, por favor ingrese una valida: ");
+        scanf("%d",&*op);
+    }
+}
 
+void inicializador(struct unaCarrera carrera[60]) 
+{
+    for (int j=0; j<60; j++) 
+    {
+        carrera[j].tiempo = 9999,999;
+    }
+}
+
+void CargadatosPilotos(struct Pilotos pi[60]) // Función pa?ra cargar pilotos.txt
+{ 
     setlocale(LC_ALL, "");
 
     int num_auto, edad;
@@ -36,18 +53,17 @@ void CargadatosPilotos(struct Pilotos pi[60])
     FILE *ArchivoPilotos; // Declaro primer archivo
     ArchivoPilotos = fopen("pilotos.txt", "r"); // Abro archivo
 
-    if (ArchivoPilotos == NULL) { // Compruebo si lo puede abrir
-        printf("Error: no se pudo abrir el archivo pilotos.txt.\n");
+    if (ArchivoPilotos == NULL) // Compruebo si lo puede abrir
+    {   printf("Error: no se pudo abrir el archivo pilotos.txt.\n");
         exit(1);
     }
 
     int i = 0;
 
-
     fscanf(ArchivoPilotos,"%d %s %s %d %s %s %s",&num_auto, nom, ap, &edad, ciudad, marca, equipo);
 
-    while (!(feof(ArchivoPilotos))) {
-
+    while (!(feof(ArchivoPilotos))) 
+    {
         pi[i].num_auto=num_auto;
         strcpy(pi[i].nom,nom);
         strcpy(pi[i].ap,ap);
@@ -57,22 +73,16 @@ void CargadatosPilotos(struct Pilotos pi[60])
         i++;
     }
 
-    //printf("\n\n\n\n\n\n\n");
-
-    // for(int i=0;i<60;i++){//muestreo de prueba
-
-    //      printf("%d\t %s\t %s\t  %s\t \n\n", pi[i].num_auto, pi[i].nom, pi[i].ap, pi[i].marca);
-    // }
-
     fclose(ArchivoPilotos); // Cierro archivo
 }
 
-void CargarDatosTiempos(struct Tiempos tiempo[180], char condicion [14]) 
+void CargarDatosTiempos(struct Tiempos tiempo[360]) 
 {
     FILE *ArchivoTiempos;
     ArchivoTiempos = fopen("tiempos.txt", "r");
 
-    if (ArchivoTiempos == NULL) {
+    if (ArchivoTiempos == NULL) 
+    {
         printf("Error: no se pudo abrir el archivo tiempos.txt.\n");
         exit(1);
     }
@@ -83,14 +93,14 @@ void CargarDatosTiempos(struct Tiempos tiempo[180], char condicion [14])
     float seg;
     int ncarrera;
     char etapa[14];
-
     int i = 0;
 
     fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_auto, &vueltas, &min, &seg, &ncarrera, etapa);
 
     while (!(feof(ArchivoTiempos))) 
     {
-        if (strcmp(etapa, condicion) == 0) {
+        if ((strcmp(etapa, "final") == 0 && vueltas==25) || (strcmp(etapa, "clasificacion") == 0 && vueltas !=0))
+        {
             tiempo[i].num_auto= num_auto;
             tiempo[i].vueltasCompletas = vueltas;
             tiempo[i].seg = (min*60)+seg;
@@ -101,34 +111,99 @@ void CargarDatosTiempos(struct Tiempos tiempo[180], char condicion [14])
         fscanf(ArchivoTiempos, "%d %d %d %f %d %s", &num_auto, &vueltas, &min, &seg, &ncarrera, etapa);
     }
 
-    for (int j = 0; j < i; j++) 
-    {
-        printf("piloto: %d\t %d\t %d\t %f\t  %d\t %s\t \n", j, tiempo[j].num_auto, tiempo[j].vueltasCompletas,  tiempo[j].seg, tiempo[j].numeroCarrera, tiempo[j].etapa);
-    }
+    // for (int j = 0; j < i; j++) 
+    // {
+    //     printf("piloto: %d\t %d\t %d\t %f\t  %d\t %s\t \n", j, tiempo[j].num_auto, tiempo[j].vueltasCompletas,  tiempo[j].seg, tiempo[j].numeroCarrera, tiempo[j].etapa);
+    // }
 
     fclose(ArchivoTiempos);
 }
 
-void datosCarrera(struct Tiempos tiempo[180], int ncarrera, struct unaCarrera carrera[60])
+void datosCarrera(struct Tiempos tiempo[360], int nCarrera, struct unaCarrera carrera[60], int etapa)
 {
     int j=0;
+    char eta[14];
 
-    for (int i = 0; i < 180; i++) {
-        if (tiempo[i].numeroCarrera == ncarrera) {
+    inicializador(carrera);
+
+    if(etapa ==1)
+    {
+        strcpy(eta, "clasificacion");
+    }
+    else
+    {
+        strcpy(eta, "final");
+    }
+
+    for (int i = 0; i < 360; i++) 
+    {
+        if (tiempo[i].numeroCarrera == nCarrera && strcmp(eta,tiempo[i].etapa)==0) 
+        {
             carrera[j].num_auto = tiempo[i].num_auto;
-            carrera[j].vueltasCompletas = tiempo[i].vueltasCompletas;
-            carrera[j].seg = tiempo[i].seg;
+            carrera[j].tiempo = tiempo[i].seg;
             j++;
         }
     }
+    
+    // printf("carrera \n");
 
-    for (int i = 0; i < j; i++) 
+    // for (int i = 0; i < j; i++) 
+    // {
+    //     printf("%d\t %f\t\n", carrera[i].num_auto,  carrera[i].tiempo);
+    // }
+}
+
+void ordenarSeleccion(struct unaCarrera carrera[60]) 
+{
+    float auxTiempo, auxNumAuto, min;
+    int pos, minPiloto;
+
+    for (int i = 0; i < 60 ; i++) 
     {
-        printf("%d\t %d\t %f\t\n", carrera[i].num_auto, carrera[i].vueltasCompletas,  carrera[i].seg);
+        min=carrera[i].tiempo;
+        pos=i;
+
+        for (int j = i + 1; j < 60; j++) 
+        {
+            if (min > carrera[j].tiempo) 
+            {
+                min = carrera[j].tiempo;
+                pos = j;
+            }
+        }
+
+        auxTiempo = carrera[i].tiempo;
+        carrera[i].tiempo = carrera[pos].tiempo;
+        carrera[pos].tiempo = auxTiempo;
+
+        auxNumAuto = carrera[i].num_auto;
+        carrera[i].num_auto = carrera[pos].num_auto;
+        carrera[pos].num_auto = auxNumAuto;
     }
 }
 
-int ACTCTC2024(struct Tiempos tiempo[180]){ //Función del menú 1
+void podio(struct unaCarrera carrera[60], struct Pilotos pilotos[60])
+{
+    ordenarSeleccion(carrera);
+
+    for(int i =0; i<60; i++)
+    {
+        printf("%d\t %f\t\n", carrera[i].num_auto,  carrera[i].tiempo); 
+    }
+
+    for(int j=0;j<3;j++)
+    {
+        for(int i=0;i<60;i++)
+        {
+            if(pilotos[i].num_auto == carrera[j].num_auto)
+            {
+                printf("La %d posicion: es %s %s de la marca %s \n", j+1, pilotos[i].nom, pilotos[i].ap, pilotos[i].marca);        
+            }
+        }
+    }
+}
+
+int ACTCTC2024(struct Tiempos tiempo[360]){ //Función del menú 1
 
     int rta;
 
@@ -139,30 +214,13 @@ int ACTCTC2024(struct Tiempos tiempo[180]){ //Función del menú 1
     printf("\n  Opcion:");
     scanf("%d",&rta);
 
-    while(rta>3||rta<1){//vValidacion
-        printf("Opcion invalida, por favor ingrese una opcion valida: ");
-        scanf("%d",&rta);
-    }
-
-    switch (rta)
-    {
-        case 1:
-            CargarDatosTiempos(tiempo, "clasificacion");
-            break;
-        case 2:
-            CargarDatosTiempos(tiempo, "final");
-            break;
-        default:
-            break;
-    }
-    printf("\n");
-
+    validar(&rta);
+    
     return rta;
-
 }
 
-int MenuCarrera(struct Tiempos tiempo[180], struct unaCarrera carrera[60]){//Función del menú 2
-
+int MenuCarrera(struct Tiempos tiempo[180], struct unaCarrera carrera[60])//Función del menú 2
+{
     int rta;
 
     printf("\n\nCarrera: \n");
@@ -171,45 +229,42 @@ int MenuCarrera(struct Tiempos tiempo[180], struct unaCarrera carrera[60]){//Fun
     printf("\n  3-Neuquen\n");
     printf("\n  Opcion:");
     scanf("%d",&rta);
-    switch (rta)
-    {
-        case 1:
-            datosCarrera(tiempo, 1, carrera);
-            break;
-        case 2:
-            datosCarrera(tiempo, 2, carrera);
-            break;
-        case 3:
-            datosCarrera(tiempo, 3, carrera);
-            break;
-        default:
-            break;
-    }
-    
-    while(rta>3||rta<1){//7Validacion
-        printf("Opcion invalida, por favor ingrese una opcion valida: ");
-        scanf("%d",&rta);
-    }
-    printf("\n");
+
+    validar(&rta);
 
     return rta;
 }
+
 int main()
 {
-    struct Pilotos pi[60];
-    struct Tiempos tiempo[180];
+    struct Pilotos pilotos[60];
+    struct Tiempos tiempo[360];
     struct unaCarrera carrera[60];
+    int opcion1,opcion2;
 
-    CargadatosPilotos(pi);
-    // CargarDatosTiempos(tiempo);
-    int opcion;
+    CargadatosPilotos(pilotos);
+    CargarDatosTiempos(tiempo);
+    inicializador(carrera);
+    opcion1 = ACTCTC2024(tiempo);
 
-    opcion = ACTCTC2024(tiempo);
+    while(opcion1!=3){ //Inicia ambos menues hasta que se desee salir  
+        switch (opcion1)
+        {
+            case 1: 
+                printf("1 en creacion\n");
+                break;
+            case 2: 
+                opcion2 = MenuCarrera(tiempo, carrera);
 
-    while(opcion!=3){//Inicia ambos menues hasta que se desee salir  
-        MenuCarrera(tiempo, carrera);
-        opcion = ACTCTC2024(tiempo);
+                datosCarrera(tiempo, opcion2, carrera, opcion1);
+                
+                podio(carrera, pilotos);
+                
+                break;
+            default:
+                break;
+        }
+        opcion1 = ACTCTC2024(tiempo);
     }
-
     return 0;
 }
