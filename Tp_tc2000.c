@@ -144,13 +144,6 @@ void datosCarrera(struct Tiempos tiempo[360], int nCarrera, struct unaCarrera ca
             j++;
         }
     }
-
-    // printf("carrera \n");
-
-    // for (int i = 0; i < j; i++)
-    // {
-    //     printf("%d\t %f\t\n", carrera[i].num_auto,  carrera[i].tiempo);
-    // }
 }
 
 void ordenarSeleccion(struct unaCarrera carrera[60])//Subrutina que ordena de menor a mayor (por selección)
@@ -186,21 +179,22 @@ void podio(struct unaCarrera carrera[60], struct Pilotos pilotos[60])
 {
     ordenarSeleccion(carrera);
 
-    for(int i =0; i<60; i++)
+   /* for(int i =0; i<60; i++)
     {
         printf("%d\t %f\t\n", carrera[i].num_auto,  carrera[i].tiempo);
     }
-
+*/
     for(int j=0;j<3;j++)
     {
         for(int i=0;i<60;i++)
         {
             if(pilotos[i].num_auto == carrera[j].num_auto)
             {
-                printf("La %d posicion: es %s %s de la marca %s \n", j+1, pilotos[i].nom, pilotos[i].ap, pilotos[i].marca);
+                printf("  La %d posicion: es %s %s numero %d con un %s \n", j+1, pilotos[i].nom, pilotos[i].ap,pilotos[i].num_auto, pilotos[i].marca);
             }
         }
     }
+    printf("\n");
 }
 
 void ACTCTC2024(){ //Función del menú 1
@@ -255,29 +249,21 @@ int main()
                     {
                         if(pilotos[i].num_auto == carrera[0].num_auto)
                         {
-                            printf("\nLa pole position fue de %s %s %s numero: %d\n", pilotos[i].nom, pilotos[i].ap, pilotos[i].marca,pole);
+                            printf("\n  La pole position fue de %s %s con un %s numero: %d\n\n", pilotos[i].nom, pilotos[i].ap, pilotos[i].marca,pole);
                         }
                     }
-
-
-
-
-
-
-
-
-
-
-
                 break;
+
             case 2://En caso que se quiera saber podio
+
                    MenuCarrera();
                    scanf("%d",&opcion2);//Recibe en numero de la carrera que queremos saber el podio
-                    validar(&opcion2);
+                   validar(&opcion2);
+                   printf("\n");
 
-                datosCarrera(tiempo, opcion2, carrera, opcion1);
+                    datosCarrera(tiempo, opcion2, carrera, opcion1);
 
-                podio(carrera, pilotos);
+                    podio(carrera, pilotos);
 
                 break;
             default:
