@@ -249,7 +249,7 @@ int main()
                     {
                         if(pilotos[i].num_auto == carrera[0].num_auto)
                         {
-                            printf("\n  La pole position fue del piloto numero %d que es %s %s con un %s\n\n",pilotos[i].num_auto,pilotos[i].nom, pilotos[i].ap, pilotos[i].marca);
+                            printf("\n  La pole position fue del piloto numero %d, que es %s %s con un %s\n\n",pilotos[i].num_auto,pilotos[i].nom, pilotos[i].ap, pilotos[i].marca);
                         }
                     }
                 break;
