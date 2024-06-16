@@ -183,6 +183,23 @@ void podio(struct unaCarrera carrera[60], struct Pilotos pilotos[60])
     }
 }
 
+void polepos(struct unaCarrera carrera[60], struct Pilotos pilotos[60]) 
+{
+    ordenarSeleccion(carrera);
+
+    // El número del auto que consiguió la pole position
+    int pole = carrera[0].num_auto;
+    
+    for (int i = 0; i < 60; i++) 
+    {
+        if (pilotos[i].num_auto == pole) 
+        {
+            printf("\nLa pole position fue del piloto numero %d, que es %s %s con un %s\n\n", pilotos[i].num_auto, pilotos[i].nom, pilotos[i].ap, pilotos[i].marca);
+            break; // Sale del bucle una vez que se encuentra el piloto
+        }
+    }
+}
+
 void ACTCTC2024() //Función del menú 1
 { 
     printf("ACTC TC 2024\n");
@@ -215,17 +232,18 @@ int main()
     validar(&opcion1);
 
     while(opcion1!=3){ //Inicia ambos menues hasta que se desee salir  
+        inicializador(carrera);
+        MenuCarrera();
+        scanf("%d",&opcion2);//Recibe en numero de la carrera que queremos saber el podio
+        validar(&opcion2);
+        datosCarrera(tiempo, opcion2, carrera, opcion1);
+
         switch (opcion1)
         {
             case 1: 
-                printf("1 en creacion\n");
+                polepos(carrera, pilotos);
                 break;
             case 2: 
-                inicializador(carrera);
-                MenuCarrera();
-                scanf("%d",&opcion2); // Numero de la carrera que queremos saber el podio
-                validar(&opcion2);
-                datosCarrera(tiempo, opcion2, carrera, opcion1);
                 podio(carrera, pilotos);
                 break;
             default:
